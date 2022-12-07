@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 // 가져올 api 인터페이스
-interface CoinInterface {
+export interface CoinInterface {
   id: string;
   name: string;
   symbol: string;
@@ -43,7 +43,13 @@ function Coins() {
         <CoinList>
           {coins.map((coin) => (
             <Coin key={coin.id}>
-              <Link to={`/${coin.id}`}>
+              <Link
+                to={`/${coin.id}`}
+                state={{
+                  coin: coin,
+                  src: `https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`,
+                }}
+              >
                 <Img
                   src={`https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}
                 />
