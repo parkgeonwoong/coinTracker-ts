@@ -4,7 +4,7 @@
  */
 
 import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { Outlet, useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { CoinInterface } from "./Coins";
 
@@ -88,29 +88,65 @@ function Coin() {
       const infoData = await (
         await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)
       ).json();
-      console.log(infoData);
+
       // 가격 api
       const priceData = await await (
         await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
       ).json();
-      console.log(priceData);
+
       setInfo(infoData);
       setPriceInfo(priceData);
+      setLoading(false);
     })();
-  }, []);
+  }, [coinId]);
 
   return (
     <Container>
       <Header>
         {/* 경로 예외처리 */}
         <Title>
-          <Img src={state.src} />
-          {state.coin?.name || "Wrong Path.."}
+          <Img src={state?.src ? state.src : info?.logo} />
+          {state?.coin?.name
+            ? state.coin.name
+            : loading
+            ? "Loading.."
+            : info?.name}
         </Title>
       </Header>
 
       {/* 로딩 */}
-      {loading ? <Loading>Loading...</Loading> : null}
+      {loading ? (
+        <Loading>Loading...</Loading>
+      ) : (
+        <>
+          <OverView>
+            <OverViewItem>
+              <span>Rank</span>
+              <span>{info?.rank}</span>
+            </OverViewItem>
+            <OverViewItem>
+              <span>Symbol</span>
+              <span>{info?.symbol}</span>
+            </OverViewItem>
+            <OverViewItem>
+              <span>open source</span>
+              <span>{info?.open_source ? "Yes" : "No"}</span>
+            </OverViewItem>
+          </OverView>
+          <Description>{info?.description}</Description>
+          <OverView>
+            <OverViewItem>
+              <span>Total Suply:</span>
+              <span>{priceInfo?.total_supply}</span>
+            </OverViewItem>
+            <OverViewItem>
+              <span>Max Supply:</span>
+              <span>{priceInfo?.max_supply}</span>
+            </OverViewItem>
+          </OverView>
+          <Outlet />
+        </>
+      )}
     </Container>
   );
 }
@@ -143,6 +179,31 @@ const Img = styled.img`
   height: 45px;
   width: 45px;
   margin-right: 10px;
+`;
+
+const OverView = styled.div`
+  display: flex;
+  justify-content: space-between;
+  background-color: #718093;
+  border-radius: 15px;
+  padding: 10px 20px;
+`;
+
+const OverViewItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  span:first-child {
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+`;
+
+const Description = styled.p`
+  margin: 20px 0px;
 `;
 
 export default Coin;
