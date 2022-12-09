@@ -3,12 +3,14 @@
  * @route : /
  */
 
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { fetchCoins } from "../api";
 
 // 가져올 api 인터페이스
-export interface CoinInterface {
+export interface ICoin {
   id: string;
   name: string;
   symbol: string;
@@ -19,17 +21,19 @@ export interface CoinInterface {
 }
 
 function Coins() {
-  const [coins, setCoins] = useState<CoinInterface[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { isLoading, data } = useQuery<ICoin[]>(["allCoins"], fetchCoins);
 
-  useEffect(() => {
-    (async () => {
-      const response = await fetch("https://api.coinpaprika.com/v1/coins");
-      const json = await response.json();
-      setCoins(json.slice(0, 100));
-      setLoading(false);
-    })();
-  }, []);
+  // const [coins, setCoins] = useState<ICoin[]>([]);
+  // const [loading, setLoading] = useState(true);
+
+  // useEffect(() => {
+  //   (async () => {
+  //     const response = await fetch("https://api.coinpaprika.com/v1/coins");
+  //     const json = await response.json();
+  //     setCoins(json.slice(0, 100));
+  //     setLoading(false);
+  //   })();
+  // }, []);
 
   return (
     <Container>
@@ -37,11 +41,11 @@ function Coins() {
         <Title>🅲oin</Title>
       </Header>
       {/* 로딩 */}
-      {loading ? (
+      {isLoading ? (
         <Loading>Loading...</Loading>
       ) : (
         <CoinList>
-          {coins.map((coin) => (
+          {data?.slice(0, 100).map((coin) => (
             <Coin key={coin.id}>
               <Link
                 to={`/${coin.id}`}

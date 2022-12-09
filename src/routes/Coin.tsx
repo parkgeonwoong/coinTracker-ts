@@ -12,11 +12,11 @@ import {
   useParams,
 } from "react-router-dom";
 import styled from "styled-components";
-import { CoinInterface } from "./Coins";
+import { ICoin } from "./Coins";
 
 interface LocationState {
   state: {
-    coin: CoinInterface;
+    coin: ICoin;
     src: string;
   };
 }
