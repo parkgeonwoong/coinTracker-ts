@@ -7,12 +7,14 @@
 
 import { Outlet } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 function App() {
   return (
     <>
       <GlobalStyle />
       <Outlet />
+      <ReactQueryDevtools initialIsOpen={false} />
     </>
   );
 }

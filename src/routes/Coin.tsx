@@ -3,6 +3,7 @@
  * @route : /:coinId
  */
 
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import {
   Link,
@@ -12,6 +13,7 @@ import {
   useParams,
 } from "react-router-dom";
 import styled from "styled-components";
+import { fetchCoinInfo, fetchCoinTicker } from "../api";
 import { ICoin } from "./Coins";
 
 interface LocationState {
@@ -78,49 +80,60 @@ interface PriceData {
 }
 
 function Coin() {
-  const [loading, setLoading] = useState(true);
   const { coinId } = useParams(); // URL param에서 가져온 값
   const { state } = useLocation() as LocationState; // Link state에서 가져온 props
-
-  // api 값 담는 곳
-  const [info, setInfo] = useState<InfoData>();
-  const [priceInfo, setPriceInfo] = useState<PriceData>();
 
   // useMatch 확인
   const priceMatch = useMatch("/:coinId/price");
   const chartMatch = useMatch("/:coinId/chart");
 
-  // console.log(state.coin);
+  // 똑같은 이름 바꾸는 것
+  const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(
+    ["info", coinId],
+    () => fetchCoinInfo(coinId)
+  );
+  const { isLoading: tickerLoading, data: tickerData } = useQuery<PriceData>(
+    ["ticker", coinId],
+    () => fetchCoinTicker(coinId)
+  );
 
-  useEffect(() => {
-    (async () => {
-      // 상세정보 api
-      const infoData = await (
-        await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)
-      ).json();
+  const loading = infoLoading || tickerLoading;
 
-      // 가격 api
-      const priceData = await await (
-        await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
-      ).json();
+  // fetch 원래 하던 방식
+  // const [loading, setLoading] = useState(true);
+  // // api 값 담는 곳
+  // const [info, setInfo] = useState<InfoData>();
+  // const [priceInfo, setPriceInfo] = useState<PriceData>();
 
-      setInfo(infoData);
-      setPriceInfo(priceData);
-      setLoading(false);
-    })();
-  }, [coinId]);
+  // useEffect(() => {
+  //   (async () => {
+  //     // 상세정보 api
+  //     const infoData = await (
+  //       await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)
+  //     ).json();
+
+  //     // 가격 api
+  //     const priceData = await await (
+  //       await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
+  //     ).json();
+
+  //     setInfo(infoData);
+  //     setPriceInfo(priceData);
+  //     setLoading(false);
+  //   })();
+  // }, [coinId]);
 
   return (
     <Container>
       <Header>
         {/* 경로 예외처리 */}
         <Title>
-          <Img src={state?.src ? state.src : info?.logo} />
+          <Img src={state?.src ? state.src : infoData?.logo} />
           {state?.coin?.name
             ? state.coin.name
             : loading
             ? "Loading.."
-            : info?.name}
+            : infoData?.name}
         </Title>
       </Header>
 
@@ -133,26 +146,26 @@ function Coin() {
           <OverView>
             <OverViewItem>
               <span>Rank</span>
-              <span>{info?.rank}</span>
+              <span>{infoData?.rank}</span>
             </OverViewItem>
             <OverViewItem>
               <span>Symbol</span>
-              <span>{info?.symbol}</span>
+              <span>{infoData?.symbol}</span>
             </OverViewItem>
             <OverViewItem>
               <span>open source</span>
-              <span>{info?.open_source ? "Yes" : "No"}</span>
+              <span>{infoData?.open_source ? "Yes" : "No"}</span>
             </OverViewItem>
           </OverView>
-          <Description>{info?.description}</Description>
+          <Description>{infoData?.description}</Description>
           <OverView>
             <OverViewItem>
               <span>Total Suply:</span>
-              <span>{priceInfo?.total_supply}</span>
+              <span>{tickerData?.total_supply}</span>
             </OverViewItem>
             <OverViewItem>
               <span>Max Supply:</span>
-              <span>{priceInfo?.max_supply}</span>
+              <span>{tickerData?.max_supply}</span>
             </OverViewItem>
           </OverView>
 
