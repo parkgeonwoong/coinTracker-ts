@@ -179,7 +179,8 @@ function Coin() {
             </Tab>
           </Tabs>
 
-          <Outlet />
+          {/* 자식 Router */}
+          <Outlet context={{ coinId: coinId }} />
         </>
       )}
     </Container>
