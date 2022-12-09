@@ -4,7 +4,13 @@
  */
 
 import { useEffect, useState } from "react";
-import { Outlet, useLocation, useParams } from "react-router-dom";
+import {
+  Link,
+  Outlet,
+  useLocation,
+  useMatch,
+  useParams,
+} from "react-router-dom";
 import styled from "styled-components";
 import { CoinInterface } from "./Coins";
 
@@ -80,6 +86,10 @@ function Coin() {
   const [info, setInfo] = useState<InfoData>();
   const [priceInfo, setPriceInfo] = useState<PriceData>();
 
+  // useMatch 확인
+  const priceMatch = useMatch("/:coinId/price");
+  const chartMatch = useMatch("/:coinId/chart");
+
   // console.log(state.coin);
 
   useEffect(() => {
@@ -119,6 +129,7 @@ function Coin() {
         <Loading>Loading...</Loading>
       ) : (
         <>
+          {/* 상세 설명 구간 */}
           <OverView>
             <OverViewItem>
               <span>Rank</span>
@@ -144,6 +155,17 @@ function Coin() {
               <span>{priceInfo?.max_supply}</span>
             </OverViewItem>
           </OverView>
+
+          {/* Nesting Routing 탭 구간 */}
+          <Tabs>
+            <Tab isActive={chartMatch !== null}>
+              <Link to={`/${coinId}/chart`}>Chart</Link>
+            </Tab>
+            <Tab isActive={priceMatch !== null}>
+              <Link to={`/${coinId}/price`}>Price</Link>
+            </Tab>
+          </Tabs>
+
           <Outlet />
         </>
       )}
@@ -204,6 +226,29 @@ const OverViewItem = styled.div`
 
 const Description = styled.p`
   margin: 20px 0px;
+`;
+
+const Tabs = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  margin: 25px 0px;
+  gap: 10px;
+`;
+
+const Tab = styled.span<{ isActive: boolean }>`
+  background-color: #718093;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 7px 0px;
+  border-radius: 15px;
+  color: ${(props) =>
+    props.isActive ? props.theme.accentColor : props.theme.textColor};
+
+  a {
+    display: block;
+  }
 `;
 
 export default Coin;
