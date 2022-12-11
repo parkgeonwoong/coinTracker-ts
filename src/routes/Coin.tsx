@@ -4,7 +4,7 @@
  */
 
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import {
   Link,
   Outlet,
@@ -15,6 +15,7 @@ import {
 import styled from "styled-components";
 import { fetchCoinInfo, fetchCoinTicker } from "../api";
 import { ICoin } from "./Coins";
+import { Helmet } from "react-helmet";
 
 interface LocationState {
   state: {
@@ -94,7 +95,10 @@ function Coin() {
   );
   const { isLoading: tickerLoading, data: tickerData } = useQuery<PriceData>(
     ["ticker", coinId],
-    () => fetchCoinTicker(coinId)
+    () => fetchCoinTicker(coinId),
+    {
+      refetchInterval: 5000, // query 3번째에 실시간 fetch 5초마다
+    }
   );
 
   const loading = infoLoading || tickerLoading;
@@ -125,6 +129,15 @@ function Coin() {
 
   return (
     <Container>
+      <Helmet>
+        <title>
+          {state?.coin?.name
+            ? state.coin.name
+            : loading
+            ? "Loading.."
+            : infoData?.name}
+        </title>
+      </Helmet>
       <Header>
         {/* 경로 예외처리 */}
         <Title>
@@ -153,8 +166,8 @@ function Coin() {
               <span>{infoData?.symbol}</span>
             </OverViewItem>
             <OverViewItem>
-              <span>open source</span>
-              <span>{infoData?.open_source ? "Yes" : "No"}</span>
+              <span>Price</span>
+              <span>{tickerData?.quotes.USD.price.toFixed(2)}</span>
             </OverViewItem>
           </OverView>
           <Description>{infoData?.description}</Description>

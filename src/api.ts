@@ -26,9 +26,12 @@ export function fetchCoinTicker(coinId: string | undefined) {
 export function fetchCoinHistory(coinId: string | undefined) {
   // 만약 날짜-> 시간이 필요한 param이라면?
   const endDate = Math.floor(Date.now() / 1000);
-  const startDate = endDate - 60 * 60 * 24 * 7 * 2; // 2주 전까지
+  const startDate = endDate - 60 * 60 * 23 * 1;
 
   return fetch(
     `https://ohlcv-api.nomadcoders.workers.dev/?coinId=${coinId}`
   ).then((response) => response.json());
+  //   return fetch(
+  //     `${BASE_URL}/coins/${coinId}/ohlcv/historical?start=${startDate}&end=${endDate}`
+  //   ).then((response) => response.json());
 }
