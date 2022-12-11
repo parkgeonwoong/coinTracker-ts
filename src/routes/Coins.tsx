@@ -99,7 +99,7 @@ const Coin = styled.li`
   color: ${(props) => props.theme.bgColor};
   margin-bottom: 20px;
   border-radius: 15px;
-  box-shadow: 5px 5px 2px rgba(255, 255, 255, 0.3);
+  box-shadow: 3px 3px 3px rgba(255, 255, 255, 0.3);
 
   a {
     display: flex;
@@ -119,8 +119,8 @@ const Loading = styled.div`
 `;
 
 const Img = styled.img`
-  height: 35px;
-  width: 35px;
+  height: 30px;
+  width: 30px;
   margin-right: 10px;
 `;
 

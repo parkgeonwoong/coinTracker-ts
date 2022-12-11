@@ -47,7 +47,7 @@ interface InfoData {
   last_data_at: string;
 }
 
-interface PriceData {
+export interface PriceData {
   id: string;
   name: string;
   symbol: string;
@@ -155,7 +155,7 @@ function Coin() {
 
       {/* 뒤로가기 */}
       <Back>
-        <button onClick={() => navigate(-1)}>Back</button>
+        <button onClick={() => navigate(-1)}>👈 Back</button>
       </Back>
 
       {/* 로딩 */}
@@ -291,9 +291,9 @@ const Back = styled.div`
   margin-bottom: 20px;
 
   button {
-    background-color: ${(props) => props.theme.bgColor};
+    background-color: #718093;
     color: ${(props) => props.theme.textColor};
-    padding: 5px;
+    padding: 5px 10px;
     border: none;
     border-radius: 10px;
     cursor: pointer;
