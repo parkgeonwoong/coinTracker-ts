@@ -6,18 +6,43 @@
  */
 
 import { Outlet } from "react-router-dom";
-import { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
+import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function App() {
   return (
     <>
       <GlobalStyle />
       <Outlet />
+      <Mode>
+        <FontAwesomeIcon icon={faSun} />
+      </Mode>
       <ReactQueryDevtools initialIsOpen={false} />
     </>
   );
 }
+
+const Mode = styled.button`
+  position: absolute;
+  bottom: 4rem;
+  left: 0.6rem;
+  width: 3rem;
+  height: 3rem;
+  background-color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  color: royalblue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: rgb(10 10 10 / 10%) 0px 0.2rem 0.5rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+`;
 
 // CSS reset styled-components 적용하기 Fragment사용 <>
 const GlobalStyle = createGlobalStyle`

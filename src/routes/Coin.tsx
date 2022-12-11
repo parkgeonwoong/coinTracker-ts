@@ -155,7 +155,7 @@ function Coin() {
 
       {/* 뒤로가기 */}
       <Back>
-        <button onClick={() => navigate(-1)}>👈 Back</button>
+        <button onClick={() => navigate("/")}>👈 Back</button>
       </Back>
 
       {/* 로딩 */}
@@ -241,7 +241,7 @@ const Img = styled.img`
 const OverView = styled.div`
   display: flex;
   justify-content: space-between;
-  background-color: #718093;
+  background-color: ${(props) => props.theme.boxColor};
   border-radius: 15px;
   padding: 10px 20px;
 `;
@@ -271,7 +271,7 @@ const Tabs = styled.div`
 `;
 
 const Tab = styled.span<{ isActive: boolean }>`
-  background-color: #718093;
+  background-color: ${(props) => props.theme.boxColor};
   text-align: center;
   text-transform: uppercase;
   font-size: 12px;
@@ -291,7 +291,7 @@ const Back = styled.div`
   margin-bottom: 20px;
 
   button {
-    background-color: #718093;
+    background-color: ${(props) => props.theme.boxColor};
     color: ${(props) => props.theme.textColor};
     padding: 5px 10px;
     border: none;
