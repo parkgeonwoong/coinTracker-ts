@@ -10,6 +10,7 @@ import {
   Outlet,
   useLocation,
   useMatch,
+  useNavigate,
   useParams,
 } from "react-router-dom";
 import styled from "styled-components";
@@ -88,6 +89,8 @@ function Coin() {
   const priceMatch = useMatch("/:coinId/price");
   const chartMatch = useMatch("/:coinId/chart");
 
+  const navigate = useNavigate();
+
   // 똑같은 이름 바꾸는 것
   const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(
     ["info", coinId],
@@ -150,6 +153,11 @@ function Coin() {
         </Title>
       </Header>
 
+      {/* 뒤로가기 */}
+      <Back>
+        <button onClick={() => navigate(-1)}>Back</button>
+      </Back>
+
       {/* 로딩 */}
       {loading ? (
         <Loading>Loading...</Loading>
@@ -167,7 +175,7 @@ function Coin() {
             </OverViewItem>
             <OverViewItem>
               <span>Price</span>
-              <span>{tickerData?.quotes.USD.price.toFixed(2)}</span>
+              <span>{tickerData?.quotes?.USD?.price.toFixed(2)}</span>
             </OverViewItem>
           </OverView>
           <Description>{infoData?.description}</Description>
@@ -275,6 +283,25 @@ const Tab = styled.span<{ isActive: boolean }>`
 
   a {
     display: block;
+  }
+`;
+
+const Back = styled.div`
+  display: flex;
+  margin-bottom: 20px;
+
+  button {
+    background-color: ${(props) => props.theme.bgColor};
+    color: ${(props) => props.theme.textColor};
+    padding: 5px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s linear;
+
+    &:hover {
+      opacity: 0.5;
+    }
   }
 `;
 

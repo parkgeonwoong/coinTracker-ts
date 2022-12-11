@@ -97,8 +97,9 @@ const CoinList = styled.ul``;
 const Coin = styled.li`
   background-color: white;
   color: ${(props) => props.theme.bgColor};
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   border-radius: 15px;
+  box-shadow: 5px 5px 2px rgba(255, 255, 255, 0.3);
 
   a {
     display: flex;
