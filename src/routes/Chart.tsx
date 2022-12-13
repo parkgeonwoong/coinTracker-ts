@@ -11,6 +11,7 @@ import ApexChart from "react-apexcharts";
 // interface
 interface ChartProps {
   coinId: string;
+  isDark: boolean;
 }
 
 interface IHistorical {
@@ -25,7 +26,7 @@ interface IHistorical {
 }
 
 function Chart() {
-  const { coinId } = useOutletContext<ChartProps>();
+  const { coinId, isDark } = useOutletContext<ChartProps>();
   const { isLoading, data } = useQuery<IHistorical[]>(
     ["ohlcv", coinId],
     () => fetchCoinHistory(coinId),
@@ -51,7 +52,7 @@ function Chart() {
           // 선 그래프
           type="line"
           options={{
-            theme: { mode: "dark" },
+            theme: { mode: isDark ? "dark" : "light" },
             chart: { width: 500, height: 500, background: "transparent" },
             yaxis: { show: false },
             xaxis: {

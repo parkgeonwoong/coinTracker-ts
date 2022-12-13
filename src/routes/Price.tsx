@@ -29,9 +29,16 @@ function Price() {
     }
   );
 
-  const USD = data?.quotes?.USD;
-  const x = USD?.ath_date as string;
-  const maxDate = new Date(x).toDateString();
+  let USD = data?.quotes?.USD;
+
+  let maxDate = new Intl.DateTimeFormat("ko", { dateStyle: "long" }).format(
+    new Date(USD?.ath_date ?? 0)
+  );
+
+  let ath_price = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  }).format(USD?.ath_price ?? 0);
 
   return (
     <div>
@@ -44,7 +51,7 @@ function Price() {
             <BoxItem>
               <span>최고가 달성일 </span>
               <span>{maxDate}</span>
-              <span>$ {USD?.ath_price.toFixed(2)}</span>
+              <span>{ath_price}</span>
             </BoxItem>
           </Box>
 
@@ -151,6 +158,7 @@ const Box = styled.div`
       span {
         &:nth-child(3) {
           font-size: 20px;
+          font-weight: 700;
           color: #f6b93b;
         }
       }

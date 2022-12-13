@@ -11,5 +11,6 @@ declare module "styled-components" {
     textColor: string;
     accentColor: string;
     boxColor: string;
+    cardBgColor: string;
   }
 }

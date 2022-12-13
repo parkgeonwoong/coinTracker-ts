@@ -6,32 +6,44 @@
  */
 
 import { Outlet } from "react-router-dom";
-import styled, { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { darkTheme, lightTheme } from "./theme";
+import { useState } from "react";
+import { HelmetProvider } from "react-helmet-async";
 
 function App() {
+  const [isDark, setIsDark] = useState(false);
+  const toggleDark = () => setIsDark((current) => !current);
+
   return (
     <>
-      <GlobalStyle />
-      <Outlet />
-      <Mode>
-        <FontAwesomeIcon icon={faSun} />
-      </Mode>
-      <ReactQueryDevtools initialIsOpen={false} />
+      <HelmetProvider>
+        {/* styled-components Provider */}
+        <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+          <GlobalStyle />
+          <Outlet context={{ isDark: isDark, toggleDark }} />
+          {/* FIXME: TODO: 모드에 따른 수정!  */}
+          <Mode onClick={toggleDark}>
+            <FontAwesomeIcon icon={isDark ? faSun : faMoon} />
+          </Mode>
+          <ReactQueryDevtools initialIsOpen={false} />
+        </ThemeProvider>
+      </HelmetProvider>
     </>
   );
 }
 
 const Mode = styled.button`
-  position: absolute;
-  bottom: 4rem;
-  left: 0.6rem;
+  position: fixed;
+  bottom: 1rem;
+  right: 0.6rem;
   width: 3rem;
   height: 3rem;
-  background-color: white;
+  background-color: ${(props) => props.theme.bgColor};
   border: none;
   border-radius: 50%;
   font-size: 1.5rem;
@@ -39,9 +51,13 @@ const Mode = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: rgb(10 10 10 / 10%) 0px 0.2rem 0.5rem;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   transition: all 0.3s ease;
   cursor: pointer;
+
+  &:hover {
+    opacity: 0.7;
+  }
 `;
 
 // CSS reset styled-components 적용하기 Fragment사용 <>

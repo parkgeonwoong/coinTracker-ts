@@ -5,8 +5,8 @@
 
 import { useQuery } from "@tanstack/react-query";
 // import { useEffect, useState } from "react";
-import { Helmet } from "react-helmet";
-import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
+import { Link, useOutletContext } from "react-router-dom";
 import styled from "styled-components";
 import { fetchCoins } from "../api";
 
@@ -21,8 +21,14 @@ export interface ICoin {
   type: string;
 }
 
+interface IThemeOutlet {
+  isDark: boolean;
+  toggleDark: () => void; // props 함수 보내고 인터페이스 하는 법
+}
+
 function Coins() {
   const { isLoading, data } = useQuery<ICoin[]>(["allCoins"], fetchCoins);
+  const { isDark, toggleDark } = useOutletContext<IThemeOutlet>();
 
   // fetch 하던 방식
   // const [coins, setCoins] = useState<ICoin[]>([]);
@@ -44,6 +50,7 @@ function Coins() {
       </Helmet>
       <Header>
         <Title>🅲oin</Title>
+        {/* <button onClick={toggleDark}>Toggle Test</button> */}
       </Header>
       {/* 로딩 */}
       {isLoading ? (
@@ -51,7 +58,7 @@ function Coins() {
       ) : (
         <CoinList>
           {data?.slice(0, 100).map((coin) => (
-            <Coin key={coin.id}>
+            <Coin key={coin.id} isDark={isDark}>
               <Link
                 to={`/${coin.id}`}
                 state={{
@@ -94,12 +101,18 @@ const Title = styled.h1`
 
 const CoinList = styled.ul``;
 
-const Coin = styled.li`
-  background-color: white;
-  color: black;
+interface IisDark {
+  isDark: boolean;
+}
+
+const Coin = styled.li<IisDark>`
+  background-color: ${(props) => props.theme.boxColor};
+  color: ${(props) => props.theme.textColor};
   margin-bottom: 20px;
   border-radius: 15px;
-  box-shadow: 3px 3px 3px rgba(255, 255, 255, 0.3);
+  box-shadow: ${(props) =>
+      props.isDark ? "rgba(255, 255, 255, 0.16)" : "rgba(0, 0, 0, 0.16)"}
+    0px 1px 4px;
 
   a {
     display: flex;
