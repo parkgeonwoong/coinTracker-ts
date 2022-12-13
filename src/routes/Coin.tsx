@@ -11,7 +11,6 @@ import {
   useLocation,
   useMatch,
   useNavigate,
-  useOutletContext,
   useParams,
 } from "react-router-dom";
 import styled from "styled-components";
@@ -82,10 +81,6 @@ export interface PriceData {
   };
 }
 
-interface IThemeOutlet {
-  isDark: boolean;
-}
-
 function Coin() {
   const { coinId } = useParams(); // URL param에서 가져온 값
   const { state } = useLocation() as LocationState; // Link state에서 가져온 props
@@ -95,7 +90,6 @@ function Coin() {
   const chartMatch = useMatch("/:coinId/chart");
 
   const navigate = useNavigate();
-  const { isDark } = useOutletContext<IThemeOutlet>();
 
   // 똑같은 이름 바꾸는 것
   const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(
@@ -207,7 +201,7 @@ function Coin() {
           </Tabs>
 
           {/* 자식 Router */}
-          <Outlet context={{ coinId: coinId, isDark: isDark }} />
+          <Outlet context={{ coinId: coinId }} />
         </>
       )}
     </Container>

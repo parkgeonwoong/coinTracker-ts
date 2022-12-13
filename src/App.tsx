@@ -5,29 +5,29 @@
  * - font import
  */
 
-import { Outlet } from "react-router-dom";
 import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
+import { Outlet } from "react-router-dom";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { darkTheme, lightTheme } from "./theme";
-import { useState } from "react";
+
 import { HelmetProvider } from "react-helmet-async";
+import { useRecoilValue } from "recoil";
+import { isDarkAtom } from "./atoms";
 
 function App() {
-  const [isDark, setIsDark] = useState(false);
-  const toggleDark = () => setIsDark((current) => !current);
-
+  const isDark = useRecoilValue(isDarkAtom);
   return (
     <>
       <HelmetProvider>
         {/* styled-components Provider */}
         <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
           <GlobalStyle />
-          <Outlet context={{ isDark: isDark, toggleDark }} />
-          {/* FIXME: TODO: 모드에 따른 수정!  */}
-          <Mode onClick={toggleDark}>
+          <Outlet />
+
+          <Mode>
             <FontAwesomeIcon icon={isDark ? faSun : faMoon} />
           </Mode>
           <ReactQueryDevtools initialIsOpen={false} />

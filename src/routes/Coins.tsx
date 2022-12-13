@@ -6,9 +6,11 @@
 import { useQuery } from "@tanstack/react-query";
 // import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Link, useOutletContext } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { fetchCoins } from "../api";
+import { isDarkAtom } from "../atoms";
 
 // 가져올 api 인터페이스
 export interface ICoin {
@@ -21,14 +23,10 @@ export interface ICoin {
   type: string;
 }
 
-interface IThemeOutlet {
-  isDark: boolean;
-  toggleDark: () => void; // props 함수 보내고 인터페이스 하는 법
-}
-
 function Coins() {
   const { isLoading, data } = useQuery<ICoin[]>(["allCoins"], fetchCoins);
-  const { isDark, toggleDark } = useOutletContext<IThemeOutlet>();
+
+  const isDark = useRecoilValue(isDarkAtom);
 
   // fetch 하던 방식
   // const [coins, setCoins] = useState<ICoin[]>([]);
