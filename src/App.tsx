@@ -3,6 +3,9 @@
  * @todo:
  * - Css 초기화
  * - font import
+ * - ThemeProvider
+ * - HelmetProvider
+ * - 다크모드 토글 버튼
  */
 
 import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
@@ -14,10 +17,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { darkTheme, lightTheme } from "./theme";
 
 import { HelmetProvider } from "react-helmet-async";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { isDarkAtom } from "./atoms";
 
 function App() {
+  const setDarkAtom = useSetRecoilState(isDarkAtom);
   const isDark = useRecoilValue(isDarkAtom);
   return (
     <>
@@ -27,7 +31,8 @@ function App() {
           <GlobalStyle />
           <Outlet />
 
-          <Mode>
+          {/* 다크모드 토글 */}
+          <Mode onClick={() => setDarkAtom((prev) => !prev)}>
             <FontAwesomeIcon icon={isDark ? faSun : faMoon} />
           </Mode>
           <ReactQueryDevtools initialIsOpen={false} />

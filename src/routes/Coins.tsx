@@ -26,6 +26,9 @@ export interface ICoin {
 function Coins() {
   const { isLoading, data } = useQuery<ICoin[]>(["allCoins"], fetchCoins);
 
+  // const setDarkAtom = useSetRecoilState(isDarkAtom);
+  // const toggleBtn = () => setDarkAtom((prev) => !prev);
+
   const isDark = useRecoilValue(isDarkAtom);
 
   // fetch 하던 방식
@@ -48,7 +51,7 @@ function Coins() {
       </Helmet>
       <Header>
         <Title>🅲oin</Title>
-        {/* <button onClick={toggleDark}>Toggle Test</button> */}
+        {/* <button onClick={toggleBtn}>Toggle Test</button> */}
       </Header>
       {/* 로딩 */}
       {isLoading ? (
