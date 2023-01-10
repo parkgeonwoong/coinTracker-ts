@@ -144,7 +144,7 @@ function Coin() {
       <Header>
         {/* 경로 예외처리 */}
         <Title>
-          <Img src={state?.src ? state.src : infoData?.logo} />
+          <Img alt="" src={state?.src ? state.src : infoData?.logo} />
           {state?.coin?.name
             ? state.coin.name
             : loading

@@ -68,6 +68,7 @@ function Coins() {
                 }}
               >
                 <Img
+                  alt=""
                   src={`https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}
                 />
                 {coin.name} 👉
@@ -98,6 +99,7 @@ const Title = styled.h1`
   color: ${(props) => props.theme.accentColor};
   font-size: 48px;
   font-weight: 500;
+  background-color: ${(props) => props.theme.bgColor};
 `;
 
 const CoinList = styled.ul``;

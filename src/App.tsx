@@ -32,7 +32,10 @@ function App() {
           <Outlet />
 
           {/* 다크모드 토글 */}
-          <Mode onClick={() => setDarkAtom((prev) => !prev)}>
+          <Mode
+            onClick={() => setDarkAtom((prev) => !prev)}
+            aria-label="다크모드"
+          >
             <FontAwesomeIcon icon={isDark ? faSun : faMoon} />
           </Mode>
           <ReactQueryDevtools initialIsOpen={false} />
