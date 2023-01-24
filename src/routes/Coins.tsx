@@ -4,13 +4,12 @@
  */
 
 import { useQuery } from "@tanstack/react-query";
-// import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { fetchCoins } from "../api";
-import { isDarkAtom } from "../atoms";
+import { fetchCoins } from "../models/api";
+import { isDarkAtom } from "../models/atoms";
 
 // 가져올 api 인터페이스
 export interface ICoin {
@@ -25,9 +24,6 @@ export interface ICoin {
 
 function Coins() {
   const { isLoading, data } = useQuery<ICoin[]>(["allCoins"], fetchCoins);
-
-  // const setDarkAtom = useSetRecoilState(isDarkAtom);
-  // const toggleBtn = () => setDarkAtom((prev) => !prev);
 
   const isDark = useRecoilValue(isDarkAtom);
 
@@ -46,13 +42,15 @@ function Coins() {
 
   return (
     <Container>
+      {/* 페이지 타이틀 */}
       <Helmet>
         <title>🅲oin</title>
       </Helmet>
+
       <Header>
         <Title>🅲oin</Title>
-        {/* <button onClick={toggleBtn}>Toggle Test</button> */}
       </Header>
+
       {/* 로딩 */}
       {isLoading ? (
         <Loading>Loading...</Loading>
@@ -60,6 +58,7 @@ function Coins() {
         <CoinList>
           {data?.slice(0, 100).map((coin) => (
             <Coin key={coin.id} isDark={isDark}>
+              {/* 사용자가 클릭 시 화면 이동, 값도 보냄 */}
               <Link
                 to={`/${coin.id}`}
                 state={{

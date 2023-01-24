@@ -6,8 +6,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { useOutletContext } from "react-router-dom";
 import styled from "styled-components";
-import { fetchCoinTicker } from "../api";
-import { PriceData } from "./Coin";
+import { fetchCoinTicker } from "../models/api";
+import { PriceData } from "../types/coinType";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowTrendDown,
@@ -89,6 +89,7 @@ function Price() {
             </BoxItem>
           </Box>
 
+          {/* 24시간, 30일 전 */}
           <Box>
             <BoxItem>
               <span>24시간 전보다</span>

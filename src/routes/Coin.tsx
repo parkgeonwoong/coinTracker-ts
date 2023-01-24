@@ -4,7 +4,6 @@
  */
 
 import { useQuery } from "@tanstack/react-query";
-// import { useEffect, useState } from "react";
 import {
   Link,
   Outlet,
@@ -14,72 +13,10 @@ import {
   useParams,
 } from "react-router-dom";
 import styled from "styled-components";
-import { fetchCoinInfo, fetchCoinTicker } from "../api";
-import { ICoin } from "./Coins";
+import { fetchCoinInfo, fetchCoinTicker } from "../models/api";
 import { Helmet } from "react-helmet-async";
 
-interface LocationState {
-  state: {
-    coin: ICoin;
-    src: string;
-  };
-}
-
-interface InfoData {
-  id: string;
-  name: string;
-  symbol: string;
-  rank: number;
-  is_new: boolean;
-  is_active: boolean;
-  type: string;
-  logo: string;
-  description: string;
-  message: string;
-  open_source: boolean;
-  started_at: string;
-  development_status: string;
-  hardware_wallet: boolean;
-  proof_type: string;
-  org_structure: string;
-  hash_algorithm: string;
-  first_data_at: string;
-  last_data_at: string;
-}
-
-export interface PriceData {
-  id: string;
-  name: string;
-  symbol: string;
-  rank: number;
-  circulating_supply: number;
-  total_supply: number;
-  max_supply: number;
-  beta_value: number;
-  first_data_at: string;
-  last_updated: string;
-  quotes: {
-    USD: {
-      ath_date: string;
-      ath_price: number;
-      market_cap: number;
-      market_cap_change_24h: number;
-      percent_change_1h: number;
-      percent_change_1y: number;
-      percent_change_6h: number;
-      percent_change_7d: number;
-      percent_change_12h: number;
-      percent_change_15m: number;
-      percent_change_24h: number;
-      percent_change_30d: number;
-      percent_change_30m: number;
-      percent_from_price_ath: number;
-      price: number;
-      volume_24h: number;
-      volume_24h_change_24h: number;
-    };
-  };
-}
+import { InfoData, LocationState, PriceData } from "../types/coinType";
 
 function Coin() {
   const { coinId } = useParams(); // URL param에서 가져온 값
@@ -91,7 +28,7 @@ function Coin() {
 
   const navigate = useNavigate();
 
-  // 똑같은 이름 바꾸는 것
+  // TODO: React-Query 똑같은 이름 바꾸는 것
   const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(
     ["info", coinId],
     () => fetchCoinInfo(coinId)
@@ -141,6 +78,7 @@ function Coin() {
             : infoData?.name}
         </title>
       </Helmet>
+
       <Header>
         {/* 경로 예외처리 */}
         <Title>

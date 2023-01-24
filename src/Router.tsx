@@ -5,11 +5,11 @@
 
 import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
-import Chart from "./routes/Chart";
-import Coin from "./routes/Coin";
 import Coins from "./routes/Coins";
-import NotFound from "./routes/NotFound";
+import Coin from "./routes/Coin";
+import Chart from "./routes/Chart";
 import Price from "./routes/Price";
+import NotFound from "./routes/NotFound";
 
 const router = createBrowserRouter(
   [

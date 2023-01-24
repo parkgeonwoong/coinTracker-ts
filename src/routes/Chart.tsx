@@ -5,10 +5,10 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { useOutletContext } from "react-router-dom";
-import { fetchCoinHistory } from "../api";
+import { fetchCoinHistory } from "../models/api";
 import ApexChart from "react-apexcharts";
 import { useRecoilValue } from "recoil";
-import { isDarkAtom } from "../atoms";
+import { isDarkAtom } from "../models/atoms";
 
 // interface
 interface ChartProps {
